@@ -5,6 +5,7 @@ import seedu.flashcli.command.ClearDeckCommand;
 import seedu.flashcli.command.CreateDeckCommand;
 import seedu.flashcli.command.DeleteCardCommand;
 import seedu.flashcli.command.DeleteDeckCommand;
+import seedu.flashcli.command.EditCardCommand;
 import seedu.flashcli.command.ExitCommand;
 import seedu.flashcli.command.HelpCommand;
 import seedu.flashcli.command.ListCardsCommand;
@@ -27,7 +28,7 @@ public class Parser {
     private static final Logger logger = Logger.getLogger("Parser");
 
     private static final String[] VALID_COMMANDS = {
-        "addCard", "listCards", "deleteCard", "createDeck",
+        "addCard", "listCards", "deleteCard", "createDeck", "editCard",
         "listDecks", "clearDeck", "deleteDeck", "study", "exit", "help"
     };
 
@@ -42,7 +43,6 @@ public class Parser {
      * @return The command corresponding to the userInput.
      * @throws FlashException if blank input, unrecognised command or invalid arguments.
      */
-
     public static Command parse(String userInput) throws FlashException {
         logger.log(Level.FINE, "parse() called with: \"{0}\"", userInput == null ? "null" : userInput);
         validateInput(userInput);
@@ -99,6 +99,8 @@ public class Parser {
             return parseListCardsCommand(arguments);
         case "deleteCard":
             return parseDeleteCardCommand(arguments);
+        case "editCard":
+            return parseEditCardCommand(arguments);
         case "createDeck":
             return parseCreateDeckCommand(arguments);
         case "listDecks":
@@ -118,46 +120,52 @@ public class Parser {
         }
     }
 
-    // Parses arguments and returns an AddCardCommand.
+    /** Parses arguments and returns an AddCardCommand. */
     private static Command parseAddCardCommand(String arguments) throws FlashException {
         AddCardArgs args = ArgumentExtractor.parseAddCardArgs(arguments);
         return new AddCardCommand(args);
     }
 
-    // Parses arguments and returns a DeleteCardCommand.
+    /** Parses arguments and returns a DeleteCardCommand. */
     private static Command parseDeleteCardCommand(String arguments) throws FlashException {
         DeleteCardArgs args = ArgumentExtractor.parseDeleteCardArgs(arguments);
         return new DeleteCardCommand(args);
     }
 
-    // Parses arguments and returns a ListCardsCommand.
+    /** Parses arguments and returns a ListCardsCommand. */
     private static Command parseListCardsCommand(String arguments) throws FlashException {
         DeckArgs args = ArgumentExtractor.parseDeckArgs(arguments);
         return new ListCardsCommand(args.getDeckName());
     }
 
-    // Parses arguments and returns a CreateDeckCommand.
+    /** Parses arguments and returns a CreateDeckCommand. */
     private static Command parseCreateDeckCommand(String arguments) throws FlashException {
         DeckArgs args = ArgumentExtractor.parseDeckArgs(arguments);
         return new CreateDeckCommand(args.getDeckName());
     }
 
-    // Parses arguments and returns a ClearDeckCommand.
+    /** Parses arguments and returns a ClearDeckCommand. */
     private static Command parseClearDeckCommand(String arguments) throws FlashException {
         DeckArgs args = ArgumentExtractor.parseDeckArgs(arguments);
         return new ClearDeckCommand(args.getDeckName());
     }
 
-    // Parses arguments and returns a DeleteDeckCommand.
+    /** Parses arguments and returns a DeleteDeckCommand. */
     private static Command parseDeleteDeckCommand(String arguments) throws FlashException {
         DeckArgs args = ArgumentExtractor.parseDeckArgs(arguments);
         return new DeleteDeckCommand(args.getDeckName());
     }
 
-    // Parses arguments and returns a StudyCommand.
+    /** Parses arguments and returns a StudyCommand. */
     private static Command parseStudyCommand(String arguments) throws FlashException {
         DeckArgs args = ArgumentExtractor.parseDeckArgs(arguments);
         return new StudyCommand(args.getDeckName());
+    }
+
+    /** Parses arguments and returns an EditCardCommand. */
+    private static Command parseEditCardCommand(String arguments) throws FlashException {
+        EditCardArgs args = ArgumentExtractor.parseEditCardArgs(arguments);
+        return new EditCardCommand(args);
     }
 
     /**
